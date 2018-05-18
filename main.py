@@ -4,8 +4,8 @@ import praw
 from datetime import datetime
 import re
 config = configparser.ConfigParser()
-config.read('auth.ini') #All my usernames and passwords for the api
-#the config file is
+config.read('auth.ini') # All my usernames and passwords for the api
+# the config file is auth.ini
 reddit = praw.Reddit(client_id=config.get('auth', 'reddit_client_id'),
                      client_secret=config.get('auth', 'reddit_client_secret'),
                      password=config.get('auth', 'reddit_password'),
@@ -16,10 +16,8 @@ print("Posting as: ", reddit.user.me())
 SUBREDDIT = config.get('auth', 'reddit_subreddit')
 LIMIT = int(config.get('auth', 'reddit_limit'))
 
-date_of_last_episode = datetime.strptime('Apr 7 2018  01:00AM', '%b %d %Y %I:%M%p')
+date_of_last_episode = datetime.strptime(config.get('auth', 'hiatus_date'), '%b %d %Y %I:%M%p')
 submissions = []
-bot_message = "\r\r^(I am a script. If I did something wrong, ) [^(let me know)](/message/compose/?to=J_C___&subject=hiatus_bot)"
-
 
 
 if not os.path.isfile("hiatus_replied_to.txt"):
@@ -29,6 +27,7 @@ else:
         hiatus_replied_to = f.read()
         hiatus_replied_to = hiatus_replied_to.split("\n")
         hiatus_replied_to = list(filter(None, hiatus_replied_to))
+
 
 def reply_bot(hiatus_replied_to):
     subreddit = reddit.subreddit(SUBREDDIT)
@@ -40,6 +39,7 @@ def reply_bot(hiatus_replied_to):
             print("sent! \n" + comment.body)
             hiatus_replied_to.append(comment.id)
 
+
 def update_files(hiatus_replied_to):
     with open("hiatus_replied_to.txt", "w") as f:
         for x in hiatus_replied_to:
@@ -47,6 +47,6 @@ def update_files(hiatus_replied_to):
 
 try:
     reply_bot(hiatus_replied_to)
-except KeyboardInterrupt:
+except:
     update_files(hiatus_replied_to)
     print('Interrupted')
