@@ -97,3 +97,5 @@ ENV/
 
 # mypy
 .mypy_cache/
+*.ini
+hiatus_replied_to.txt
