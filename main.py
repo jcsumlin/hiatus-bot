@@ -40,7 +40,11 @@ def reply_bot(hiatus_replied_to):
             print("sent! \n" + comment.body)
             hiatus_replied_to.append(comment.id)
         elif "!roll" in comment.body.lower() and comment.id not in hiatus_replied_to:
-            comment.reply(str(random.randint(1, 20)) + bot_message)
+            max_roll = re.search('{(\d+)}', comment_test)
+            if max_roll != None:
+                comment.reply(str(random.randint(1, int(max_roll.group(1)))) + bot_message)
+            else:
+                comment.reply(str(random.randint(1, 20)) + bot_message)
             hiatus_replied_to.append(comment.id)
 
 def update_files(hiatus_replied_to):
