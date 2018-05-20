@@ -49,6 +49,6 @@ def update_files(hiatus_replied_to):
 
 try:
     reply_bot(hiatus_replied_to)
-except:
+except KeyboardInterrupt:
     update_files(hiatus_replied_to)
     print('Interrupted')
