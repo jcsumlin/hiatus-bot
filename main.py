@@ -38,7 +38,9 @@ def reply_bot(hiatus_replied_to):
             comment.reply("Days since last episode:\n\n" + "[" + days + "Days]" + bot_message)
             print("sent! \n" + comment.body)
             hiatus_replied_to.append(comment.id)
-
+        elif "!roll" in comment.body.lower() and comment.id not in hiatus_replied_to:
+            comment.reply(str(random.randint(1, 20)) + bot_message)
+            hiatus_replied_to.append(comment.id)
 
 def update_files(hiatus_replied_to):
     with open("hiatus_replied_to.txt", "w") as f:
