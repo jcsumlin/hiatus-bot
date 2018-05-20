@@ -46,7 +46,9 @@ def reply_bot(hiatus_replied_to):
             else:
                 comment.reply(str(random.randint(1, 20)) + bot_message)
             hiatus_replied_to.append(comment.id)
+            update_files(hiatus_replied_to)
 
+            
 def update_files(hiatus_replied_to):
     with open("hiatus_replied_to.txt", "w") as f:
         for x in hiatus_replied_to:
