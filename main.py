@@ -3,6 +3,7 @@ import configparser
 import praw
 from datetime import datetime
 import re
+import randoms
 config = configparser.ConfigParser()
 config.read('auth.ini') # All my usernames and passwords for the api
 # the config file is auth.ini
