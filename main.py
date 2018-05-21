@@ -41,7 +41,7 @@ def reply_bot(hiatus_replied_to):
             hiatus_replied_to.append(comment.id)
         elif "!roll" in comment.body.lower() and comment.id not in hiatus_replied_to:
             max_roll = re.search('{(\d+)}', comment.body.lower())
-            if max_roll != None:
+            if max_roll is not None:
                 comment.reply(str(random.randint(1, int(max_roll.group(1)))) + bot_message)
             else:
                 comment.reply(str(random.randint(1, 20)) + bot_message)
