@@ -52,7 +52,7 @@ def reply_bot():
             update_files(hiatus_replied_to)
 
 
-def update_files():
+def update_files(hiatus_replied_to):
     with open("hiatus_replied_to.txt", "w") as f:
         for x in hiatus_replied_to:
             f.write(x + "\n")
