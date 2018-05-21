@@ -59,6 +59,6 @@ def update_files():
 
 
 try:
-    reply_bot(hiatus_replied_to)
+    reply_bot()
 except Exception as e:
-    print('Interrupted: ' + e.message)
+    print('Interrupted:', e.message, e.args)
