@@ -5,20 +5,22 @@ from datetime import datetime
 import re
 import random
 config = configparser.ConfigParser()
-config.read('auth.ini') # All my usernames and passwords for the api
+config.read('auth.ini')  # All my usernames and passwords for the api
 # the config file is auth.ini
 reddit = praw.Reddit(client_id=config.get('auth', 'reddit_client_id'),
                      client_secret=config.get('auth', 'reddit_client_secret'),
                      password=config.get('auth', 'reddit_password'),
-                     user_agent=config.get('auth', 'reddit_user_agent'),
+                     user_agent='SVTFOE command bot (by u/J_C___)',
                      username=config.get('auth', 'reddit_username'))
-bot_message = "\r\r^(I am a script. If I did something wrong, ) [^(let me know)](/message/compose/?to=J_C___&subject=all_seeing_eye_bot)"
+date_of_last_episode = datetime.strptime(config.get('auth', 'hiatus_date'), '%b %d %Y %I:%M%p')  # Set from config
 print("Posting as: ", reddit.user.me())
+
+'''
+Program baisc static variables
+'''
+bot_message = "\r\r^(I am a script. If I did something wrong, ) [^(let me know)](/message/compose/?to=J_C___&subject=all_seeing_eye_bot)"
 SUBREDDIT = config.get('auth', 'reddit_subreddit')
 LIMIT = int(config.get('auth', 'reddit_limit'))
-
-date_of_last_episode = datetime.strptime(config.get('auth', 'hiatus_date'), '%b %d %Y %I:%M%p')
-submissions = []
 
 
 if not os.path.isfile("hiatus_replied_to.txt"):
@@ -30,7 +32,7 @@ else:
         hiatus_replied_to = list(filter(None, hiatus_replied_to))
 
 
-def reply_bot(hiatus_replied_to):
+def reply_bot():
     subreddit = reddit.subreddit(SUBREDDIT)
     comment_stream = subreddit.stream.comments()
     for comment in comment_stream:
@@ -46,16 +48,17 @@ def reply_bot(hiatus_replied_to):
             else:
                 comment.reply(str(random.randint(1, 20)) + bot_message)
             hiatus_replied_to.append(comment.id)
+            # Immediately update text file to prevent not saving progress.
             update_files(hiatus_replied_to)
 
 
-def update_files(hiatus_replied_to):
+def update_files():
     with open("hiatus_replied_to.txt", "w") as f:
         for x in hiatus_replied_to:
             f.write(x + "\n")
 
+
 try:
     reply_bot(hiatus_replied_to)
-except KeyboardInterrupt:
-    update_files(hiatus_replied_to)
-    print('Interrupted')
+except Exception as e:
+    print('Interrupted: %e' % e)
