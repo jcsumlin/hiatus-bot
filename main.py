@@ -60,5 +60,6 @@ def update_files(hiatus_replied_to):
 
 try:
     reply_bot()
-except Exception as e:
-    print('Interrupted:', e.message, e.args)
+except KeyboardInterrupt:
+    update_files(hiatus_replied_to)
+    print('Interrupted, files updated')
