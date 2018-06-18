@@ -67,7 +67,7 @@ def reply_bot():
         if "!hiatus" in comment.body.lower() and comment.id not in hiatus_replied_to:
             days = re.search('\d{1,3}\s', str(datetime.now() - date_of_last_episode)).group(0)
             comment_id = comment.reply("Days since last episode:\n\n" + "[" + days + "Days]" + bot_message)
-            logging.info('Comment left successfully: ' + comment_id)
+            logging.info('Comment left successfully: %s' % comment_id.id)
             hiatus_replied_to.append(comment.id)
             update_files(hiatus_replied_to)
         elif "!roll" in comment.body.lower() and comment.id not in hiatus_replied_to:
