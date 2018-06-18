@@ -5,8 +5,11 @@ import random
 import re
 import time
 from datetime import datetime
-import praw
+from pushbullet import Pushbullet
+
 import coloredlogs
+import praw
+
 coloredlogs.install()
 
 
@@ -14,6 +17,7 @@ logging.basicConfig(filename='bot.log', level=logging.INFO, format="%(asctime)s:
 
 config = configparser.ConfigParser()
 config.read('auth.ini')
+pb = Pushbullet(str(config.get('auth', 'pb_key')))
 reddit = praw.Reddit(client_id=config.get('auth', 'reddit_client_id'),
                      client_secret=config.get('auth', 'reddit_client_secret'),
                      password=config.get('auth', 'reddit_password'),
@@ -122,6 +126,7 @@ if __name__ == "__main__":
             time.sleep(30)
             pass
         finally:
+            push = pb.push_note("SCRIPT Down", "J_C___ Hiatus Script is Down!")
             update_files(hiatus_replied_to)
 
 
