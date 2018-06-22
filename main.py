@@ -24,8 +24,6 @@ reddit = praw.Reddit(client_id=config.get('auth', 'reddit_client_id'),
                      user_agent='SVTFOE command bot (by u/J_C___)',
                      username=config.get('auth', 'reddit_username'))
 date_of_last_episode = datetime.strptime(config.get('auth', 'hiatus_date'), '%b %d %Y %I:%M%p')  # Set from config
-logging.info("-----Starting Hiatus Bot------")
-logging.info("Posting as: %s" % reddit.user.me())
 
 '''
 Program basic static variables
@@ -111,6 +109,8 @@ def update_files(hiatus_replied_to):
 if __name__ == "__main__":
     while True:
         try:
+            logging.info("------Starting: Hiatus Your Post Bot------")
+            logging.info("Posting as: %s" % reddit.user.me())
             reply_bot()
         except KeyboardInterrupt:
             print('Interrupted, files updated')
@@ -133,6 +133,3 @@ if __name__ == "__main__":
         finally:
             push = pb.push_note("SCRIPT Down", "J_C___ Hiatus Script is Down!")
             update_files(hiatus_replied_to)
-
-
-
