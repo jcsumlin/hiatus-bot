@@ -97,7 +97,7 @@ def reply_bot():
             hiatus_replied_to.append(comment.id)
         elif "!subscribe" in comment.body.lower() and comment.id not in hiatus_replied_to:
             if add_user(str(comment.author)) is True:
-                reddit.redditor(comment.author).message("Watch Party!", "Thanks! You have been subscribed to be notified via Reddit mail when u/J_C___ is hosting a watch along!" + bot_message)
+                reddit.redditor(str(comment.author)).message("Watch Party!", "Thanks! You have been subscribed to be notified via Reddit mail when u/J_C___ is hosting a watch along!" + bot_message)
                 logging.info("(Subscribe) Comment Replied To: %s" % comment.id)
                 hiatus_replied_to.append(comment.id)
 
