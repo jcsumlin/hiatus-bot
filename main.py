@@ -5,14 +5,12 @@ import random
 import re
 import time
 from datetime import datetime
-
 import coloredlogs
+
 import praw
 from pushbullet import Pushbullet
 
 coloredlogs.install()
-
-
 logging.basicConfig(filename='bot.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
 
 config = configparser.ConfigParser()
@@ -97,8 +95,21 @@ def reply_bot():
             comment.reply(random.choice(coin) + bot_message)
             logging.info("(CoinFlip) Parent Comment Replied To: %s" % comment.id)
             hiatus_replied_to.append(comment.id)
+        elif "!subscribe" in comment.body.lower() and comment.id not in hiatus_replied_to:
+            if add_user(str(comment.author)) is True:
+                reddit.redditor(comment.author).message("Watch Party!", "Thanks! You have been subscribed to be notified via Reddit mail when u/J_C___ is hosting a watch along!" + bot_message)
+                logging.info("(Subscribe) Comment Replied To: %s" % comment.id)
+                hiatus_replied_to.append(comment.id)
 
 
+def add_user(user):
+    with open("subs.txt", "r") as f:
+        if user in f.read():
+            logging.info("User already subscribed... Skipping")
+            return False
+    with open("subs.txt", "a") as f:
+        f.write(user + "\n")
+        return True
 
 
 def update_files(hiatus_replied_to):
@@ -114,20 +125,8 @@ if __name__ == "__main__":
             reply_bot()
         except KeyboardInterrupt:
             print('Interrupted, files updated')
-        except (AttributeError, praw.exceptions.PRAWException) as e:
-            logging.warning("PRAW encountered an error, waiting 30s before trying again. %s" % e)
-            time.sleep(30)
-            pass
-        except praw.exceptions.APIException as e:
-            logging.warning("Reddit API encountered an error. %s" % e)
-            time.sleep(30)
-            pass
-        except praw.exceptions.ResponseException as e:
-            logging.warning("Reddit encountered a response error. %s" % e)
-            time.sleep(30)
-            pass
         except Exception as e:
-            logging.critical("Uncaught error: %s" % e)
+            logging.critical("Error error: %s" % e)
             time.sleep(30)
             pass
         finally:
