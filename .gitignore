@@ -98,9 +98,3 @@ ENV/
 # mypy
 .mypy_cache/
 *.ini
-subscribe.py
-subs.txt
-subs.txt
-imput.csv
-hiatus_replied_to.txt
-*.xml
