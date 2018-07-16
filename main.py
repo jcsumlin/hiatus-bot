@@ -111,10 +111,10 @@ def reply_bot():
             comment_reply += '**Commands run**: ' + str(len(hiatus_replied_to)) +  '\r\r'
             comment_reply += '**CPU Usage**: ' + str(psutil.cpu_percent()) + '%\r\r'
             comment_reply += '**Uptime**: ' + get_bot_uptime() + '\r\r'
-            comment_reply += '**Source**: (GitHub)[https://github.com/jcsumlin/hiatus-bot] \r\r'
+            comment_reply += '**Source**: [GitHub](https://github.com/jcsumlin/hiatus-bot) \r\r'
             comment_reply += '**Author**: u/J_C___ \r\r'
             days = re.search('\d{1,3}\s', str(datetime.now() - datetime.strptime('Apr 18 2018 02:00AM', '%b %d %Y %I:%M%p'))).group(0)
-            comment_reply += '^Serving ^the ^sub ^since ^April ^18th ^2018 ^((%s Days!))' % days
+            comment_reply += '^Serving ^the ^sub ^since ^April ^18th ^2018 ^((%s Days!)^)' % days
             comment.reply(comment_reply)
             hiatus_replied_to.append(comment.id)
             logging.info("(Info) Comment Replied To: %s" % comment.id)
