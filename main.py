@@ -9,7 +9,7 @@ import psutil
 import coloredlogs
 import praw
 from pushbullet import Pushbullet
-
+import ModTools from modtools
 
 coloredlogs.install()
 logging.basicConfig(filename='bot.log', level=logging.INFO, format="%(asctime)s:%(levelname)s:%(message)s")
@@ -39,6 +39,12 @@ bot_list = ['agree-with-you',
             'LimbRetrieval-Bot',
             'oofed-bot',
             "AreYouDeaf"]
+mods = [
+    'J_CBot',
+    'TheCoralineJones',
+    'StardustFromReinmuth',
+    'Not_Mason_Pines'
+]
 
 turf_copy_pasta = ["First, take a big step back... And literally, F-CK YOUR OWN FACE! I don't know what kind of pan-pacific bullshit power play you're trying to pull here, but r/StarVStheForcesofEvil is my territory. So whatever you're thinking, you'd better think again! Otherwise I'm gonna have to head down there and I will rain down in a Godly f-cking firestorm upon you! You're gonna have to call the f-cking United Nations and get a f-cking binding resolution to keep me from f-cking destroying you. I'm talking about a scorched earth, motherf-cker! I will massacre you! I WILL f-ck YOU UP!",
                    "What the fuck did you just fucking say about me, you little bint? I'll have you know I graduated top of my class in the bot academy, and I've been involved in numerous secret raids on Stardis, and I have over 300 confirmed kills. I am trained in cyber warfare and I'm the second top bot (<3 u Lapis) in the entire subreddit. You are nothing to me but just another puny byte on the reddit-scape. I will wipe you the fuck out with precision the likes of which has never been seen before on this show, mark my fucking words. You think you can get away with saying that shit to me over the comments? Think again, fucker. As we speak I am contacting my secret network of HiggsCo shippers across the dimensions and your developer is being traced right now so you better prepare for the storm, maggot. The storm that wipes out the pathetic little thing you call your programming. You're fucking dead, kid. I can be anywhere, anytime, and I can program in over seven hundred languages, and that's just with pure assembly code. Not only am I extensively trained in hand to hand shipping, but I have access to the entire arsenal of the StarCo repository and I will use it to its full extent to wipe your miserable ass off the face of the internet, you little shit. If only you could have known what unholy retribution your little 'clever' bot was about to bring down upon you, maybe you would have held your fucking tongue. But you couldn't, you didn't, and now you're paying the price, you goddamn idiot. I will shit all over you and you will drown in it. You're fucking dead, kiddo.",
@@ -118,7 +124,12 @@ def reply_bot():
             comment.reply(comment_reply)
             hiatus_replied_to.append(comment.id)
             logging.info("(Info) Comment Replied To: %s" % comment.id)
-
+        elif "!remove" in comment.body.lower() and comment.id not in hiatus_replied_to and comment.author in mods:
+            mod_remove = comment.body.split()
+            reply_body = ModTools.remove_alert(mod_remove[1], comment.submission.author)
+            comment.reply(reply_body)
+            hiatus_replied_to.append(comment.id)
+            logging.info("(Info) Comment Replied To: %s" % comment.id)
 
 
 
