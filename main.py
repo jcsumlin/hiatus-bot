@@ -6,7 +6,6 @@ import time
 from datetime import datetime
 import psutil
 import praw
-from pushbullet import Pushbullet
 from loguru import logger
 
 
