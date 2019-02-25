@@ -157,7 +157,7 @@ def reply_bot():
                 logger.error("Error Replying to comment! !info")
                 pass
             hiatus_replied_to.add(comment.id)
-            logger.info("(Info) Comment Replied To: %s" % comment.id)
+            logger.success("(Info) Comment Replied To: %s" % comment.id)
 
 
 
@@ -205,11 +205,11 @@ if __name__ == "__main__":
             start_time = datetime.utcnow()
             reply_bot()
         except KeyboardInterrupt:
-            print('Interrupted, files updated')
+            print('Interrupted')
         except Exception as e:
             logger.critical("Error error: %s" % e)
             time.sleep(30)
             pass
         finally:
-            push = pb.push_note("SCRIPT Down", "J_C___ Hiatus Script is Down!")
             update_files(hiatus_replied_to)
+            logger.success('files updated')
