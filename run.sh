@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 FAILS=0
 
 while true
