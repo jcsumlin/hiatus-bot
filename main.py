@@ -19,7 +19,6 @@ try:
                          username=config.get('auth', 'reddit_username'))
 except:
     logger.error("Reddit unable to login, check credentials in auth.ini file")
-date_of_last_episode = datetime.strptime(config.get('auth', 'hiatus_date'), '%b %d %Y %I:%M%p')  # Set from config
 
 '''
 Program basic static variables
@@ -54,7 +53,7 @@ hug = ['http://i0.kym-cdn.com/photos/images/newsfeed/000/947/098/6df.gif',
        'https://i.pinimg.com/originals/bf/f6/6a/bff66a56931a9e0c15d124085c7139a2.gif',
        'https://d12qk6n9ersps4.cloudfront.net/5467287/medium-clean.jpg',
        'https://66.media.tumblr.com/68922af24086e273fe5718351f9aa2f1/tumblr_ozoc3x0pA91qzkiifo2_1280.png']
-
+gaged_users = ['Planckslenght', 'murrlogic']
 
 if not os.path.isfile("hiatus_replied_to.txt"):
     hiatus_replied_to = set()
@@ -71,17 +70,11 @@ def reply_bot():
         comment_stream = subreddit.stream.comments()
     except Exception as e:
         logger.error("Reddit stream error")
+        exit()
     for comment in comment_stream:
-        if "!hiatus" in comment.body.lower() and comment.id not in hiatus_replied_to:
-            days = re.search('\d{1,3}\s', str(datetime.now() - date_of_last_episode)).group(0)
-            try:
-                comment_id = comment.reply("Days since last episode:\n\n" + "[" + days + "Days]" + bot_message)
-            except Exception:
-                logger.error("Error Replying to comment! !hiatus")
-                pass
-            logger.success('Comment left successfully: %s' % comment_id.id)
-            hiatus_replied_to.add(comment.id)
-            update_files(hiatus_replied_to)
+        if comment.author.name in gaged_users and not comment.approved:
+            logger.info(comment.author.name)
+            comment.mod.remove()
         elif "!roll" in comment.body.lower() and comment.id not in hiatus_replied_to:
             max_roll = re.search('{(\d+)}', comment.body.lower())
             if max_roll is not None:
